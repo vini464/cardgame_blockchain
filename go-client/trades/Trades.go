@@ -29,9 +29,20 @@ var (
 	_ = abi.ConvertType
 )
 
+// TradesTrade is an auto generated low-level Go binding around an user-defined struct.
+type TradesTrade struct {
+	PlayerA   common.Address
+	CardA     *big.Int
+	AcceptedA bool
+	PlayerB   common.Address
+	CardB     *big.Int
+	AcceptedB bool
+	Complete  bool
+}
+
 // TradesMetaData contains all meta data concerning the Trades contract.
 var TradesMetaData = &bind.MetaData{
-	ABI: "[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"cardsContract\",\"type\":\"address\"}],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"tradeId\",\"type\":\"uint256\"}],\"name\":\"acceptOffer\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"tradeId\",\"type\":\"uint256\"}],\"name\":\"cancelOffer\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"cards\",\"outputs\":[{\"internalType\":\"contractICards\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"cardA\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"playerB\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"cardB\",\"type\":\"uint256\"}],\"name\":\"createOffer\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"operator\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"from\",\"type\":\"address\"},{\"internalType\":\"uint256[]\",\"name\":\"ids\",\"type\":\"uint256[]\"},{\"internalType\":\"uint256[]\",\"name\":\"values\",\"type\":\"uint256[]\"},{\"internalType\":\"bytes\",\"name\":\"data\",\"type\":\"bytes\"}],\"name\":\"onERC1155BatchReceived\",\"outputs\":[{\"internalType\":\"bytes4\",\"name\":\"\",\"type\":\"bytes4\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"operator\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"from\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"id\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"value\",\"type\":\"uint256\"},{\"internalType\":\"bytes\",\"name\":\"data\",\"type\":\"bytes\"}],\"name\":\"onERC1155Received\",\"outputs\":[{\"internalType\":\"bytes4\",\"name\":\"\",\"type\":\"bytes4\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes4\",\"name\":\"interfaceId\",\"type\":\"bytes4\"}],\"name\":\"supportsInterface\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"trades\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"playerA\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"cardA\",\"type\":\"uint256\"},{\"internalType\":\"bool\",\"name\":\"acceptedA\",\"type\":\"bool\"},{\"internalType\":\"address\",\"name\":\"playerB\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"cardB\",\"type\":\"uint256\"},{\"internalType\":\"bool\",\"name\":\"acceptedB\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"complete\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"}]",
+	ABI: "[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"cardsContract\",\"type\":\"address\"}],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"tradeId\",\"type\":\"uint256\"}],\"name\":\"acceptOffer\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"tradeId\",\"type\":\"uint256\"}],\"name\":\"cancelOffer\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"cards\",\"outputs\":[{\"internalType\":\"contractICards\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"cardA\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"playerB\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"cardB\",\"type\":\"uint256\"}],\"name\":\"createOffer\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"tradeId\",\"type\":\"uint256\"}],\"name\":\"getTrade\",\"outputs\":[{\"components\":[{\"internalType\":\"address\",\"name\":\"playerA\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"cardA\",\"type\":\"uint256\"},{\"internalType\":\"bool\",\"name\":\"acceptedA\",\"type\":\"bool\"},{\"internalType\":\"address\",\"name\":\"playerB\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"cardB\",\"type\":\"uint256\"},{\"internalType\":\"bool\",\"name\":\"acceptedB\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"complete\",\"type\":\"bool\"}],\"internalType\":\"structTrades.Trade\",\"name\":\"\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"nextTradeId\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"operator\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"from\",\"type\":\"address\"},{\"internalType\":\"uint256[]\",\"name\":\"ids\",\"type\":\"uint256[]\"},{\"internalType\":\"uint256[]\",\"name\":\"values\",\"type\":\"uint256[]\"},{\"internalType\":\"bytes\",\"name\":\"data\",\"type\":\"bytes\"}],\"name\":\"onERC1155BatchReceived\",\"outputs\":[{\"internalType\":\"bytes4\",\"name\":\"\",\"type\":\"bytes4\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"operator\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"from\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"id\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"value\",\"type\":\"uint256\"},{\"internalType\":\"bytes\",\"name\":\"data\",\"type\":\"bytes\"}],\"name\":\"onERC1155Received\",\"outputs\":[{\"internalType\":\"bytes4\",\"name\":\"\",\"type\":\"bytes4\"}],\"stateMutability\":\"pure\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes4\",\"name\":\"interfaceId\",\"type\":\"bytes4\"}],\"name\":\"supportsInterface\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"trades\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"playerA\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"cardA\",\"type\":\"uint256\"},{\"internalType\":\"bool\",\"name\":\"acceptedA\",\"type\":\"bool\"},{\"internalType\":\"address\",\"name\":\"playerB\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"cardB\",\"type\":\"uint256\"},{\"internalType\":\"bool\",\"name\":\"acceptedB\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"complete\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"}]",
 }
 
 // TradesABI is the input ABI used to generate the binding from.
@@ -209,6 +220,68 @@ func (_Trades *TradesSession) Cards() (common.Address, error) {
 // Solidity: function cards() view returns(address)
 func (_Trades *TradesCallerSession) Cards() (common.Address, error) {
 	return _Trades.Contract.Cards(&_Trades.CallOpts)
+}
+
+// GetTrade is a free data retrieval call binding the contract method 0x2db25e05.
+//
+// Solidity: function getTrade(uint256 tradeId) view returns((address,uint256,bool,address,uint256,bool,bool))
+func (_Trades *TradesCaller) GetTrade(opts *bind.CallOpts, tradeId *big.Int) (TradesTrade, error) {
+	var out []interface{}
+	err := _Trades.contract.Call(opts, &out, "getTrade", tradeId)
+
+	if err != nil {
+		return *new(TradesTrade), err
+	}
+
+	out0 := *abi.ConvertType(out[0], new(TradesTrade)).(*TradesTrade)
+
+	return out0, err
+
+}
+
+// GetTrade is a free data retrieval call binding the contract method 0x2db25e05.
+//
+// Solidity: function getTrade(uint256 tradeId) view returns((address,uint256,bool,address,uint256,bool,bool))
+func (_Trades *TradesSession) GetTrade(tradeId *big.Int) (TradesTrade, error) {
+	return _Trades.Contract.GetTrade(&_Trades.CallOpts, tradeId)
+}
+
+// GetTrade is a free data retrieval call binding the contract method 0x2db25e05.
+//
+// Solidity: function getTrade(uint256 tradeId) view returns((address,uint256,bool,address,uint256,bool,bool))
+func (_Trades *TradesCallerSession) GetTrade(tradeId *big.Int) (TradesTrade, error) {
+	return _Trades.Contract.GetTrade(&_Trades.CallOpts, tradeId)
+}
+
+// NextTradeId is a free data retrieval call binding the contract method 0x813ad083.
+//
+// Solidity: function nextTradeId() view returns(uint256)
+func (_Trades *TradesCaller) NextTradeId(opts *bind.CallOpts) (*big.Int, error) {
+	var out []interface{}
+	err := _Trades.contract.Call(opts, &out, "nextTradeId")
+
+	if err != nil {
+		return *new(*big.Int), err
+	}
+
+	out0 := *abi.ConvertType(out[0], new(*big.Int)).(**big.Int)
+
+	return out0, err
+
+}
+
+// NextTradeId is a free data retrieval call binding the contract method 0x813ad083.
+//
+// Solidity: function nextTradeId() view returns(uint256)
+func (_Trades *TradesSession) NextTradeId() (*big.Int, error) {
+	return _Trades.Contract.NextTradeId(&_Trades.CallOpts)
+}
+
+// NextTradeId is a free data retrieval call binding the contract method 0x813ad083.
+//
+// Solidity: function nextTradeId() view returns(uint256)
+func (_Trades *TradesCallerSession) NextTradeId() (*big.Int, error) {
+	return _Trades.Contract.NextTradeId(&_Trades.CallOpts)
 }
 
 // OnERC1155BatchReceived is a free data retrieval call binding the contract method 0xbc197c81.

@@ -29,9 +29,19 @@ var (
 	_ = abi.ConvertType
 )
 
+// MatchesMatch is an auto generated low-level Go binding around an user-defined struct.
+type MatchesMatch struct {
+	PlayerA  common.Address
+	CardA    *big.Int
+	PlayerB  common.Address
+	CardB    *big.Int
+	Finished bool
+	Winner   common.Address
+}
+
 // MatchesMetaData contains all meta data concerning the Matches contract.
 var MatchesMetaData = &bind.MetaData{
-	ABI: "[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"cardsAddress\",\"type\":\"address\"}],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"inputs\":[],\"name\":\"cards\",\"outputs\":[{\"internalType\":\"contractICards\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"enqueue\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"isWaiting\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"matches\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"playerA\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"cardA\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"playerB\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"cardB\",\"type\":\"uint256\"},{\"internalType\":\"bool\",\"name\":\"finished\",\"type\":\"bool\"},{\"internalType\":\"address\",\"name\":\"winner\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"nextMatchId\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"matchId\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"cardId\",\"type\":\"uint256\"}],\"name\":\"playCard\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"waitingPlayer\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"}]",
+	ABI: "[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"cardsAddress\",\"type\":\"address\"}],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"inputs\":[],\"name\":\"cards\",\"outputs\":[{\"internalType\":\"contractICards\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"enqueue\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"matchId\",\"type\":\"uint256\"}],\"name\":\"getMatch\",\"outputs\":[{\"components\":[{\"internalType\":\"address\",\"name\":\"playerA\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"cardA\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"playerB\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"cardB\",\"type\":\"uint256\"},{\"internalType\":\"bool\",\"name\":\"finished\",\"type\":\"bool\"},{\"internalType\":\"address\",\"name\":\"winner\",\"type\":\"address\"}],\"internalType\":\"structMatches.Match\",\"name\":\"\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"isWaiting\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"matches\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"playerA\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"cardA\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"playerB\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"cardB\",\"type\":\"uint256\"},{\"internalType\":\"bool\",\"name\":\"finished\",\"type\":\"bool\"},{\"internalType\":\"address\",\"name\":\"winner\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"nextMatchId\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"matchId\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"cardId\",\"type\":\"uint256\"}],\"name\":\"playCard\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"waitingPlayer\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"}]",
 }
 
 // MatchesABI is the input ABI used to generate the binding from.
@@ -209,6 +219,37 @@ func (_Matches *MatchesSession) Cards() (common.Address, error) {
 // Solidity: function cards() view returns(address)
 func (_Matches *MatchesCallerSession) Cards() (common.Address, error) {
 	return _Matches.Contract.Cards(&_Matches.CallOpts)
+}
+
+// GetMatch is a free data retrieval call binding the contract method 0x3d092b3d.
+//
+// Solidity: function getMatch(uint256 matchId) view returns((address,uint256,address,uint256,bool,address))
+func (_Matches *MatchesCaller) GetMatch(opts *bind.CallOpts, matchId *big.Int) (MatchesMatch, error) {
+	var out []interface{}
+	err := _Matches.contract.Call(opts, &out, "getMatch", matchId)
+
+	if err != nil {
+		return *new(MatchesMatch), err
+	}
+
+	out0 := *abi.ConvertType(out[0], new(MatchesMatch)).(*MatchesMatch)
+
+	return out0, err
+
+}
+
+// GetMatch is a free data retrieval call binding the contract method 0x3d092b3d.
+//
+// Solidity: function getMatch(uint256 matchId) view returns((address,uint256,address,uint256,bool,address))
+func (_Matches *MatchesSession) GetMatch(matchId *big.Int) (MatchesMatch, error) {
+	return _Matches.Contract.GetMatch(&_Matches.CallOpts, matchId)
+}
+
+// GetMatch is a free data retrieval call binding the contract method 0x3d092b3d.
+//
+// Solidity: function getMatch(uint256 matchId) view returns((address,uint256,address,uint256,bool,address))
+func (_Matches *MatchesCallerSession) GetMatch(matchId *big.Int) (MatchesMatch, error) {
+	return _Matches.Contract.GetMatch(&_Matches.CallOpts, matchId)
 }
 
 // IsWaiting is a free data retrieval call binding the contract method 0x7fecd538.

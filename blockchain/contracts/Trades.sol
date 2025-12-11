@@ -24,7 +24,7 @@ contract Trades is IERC1155Receiver, ERC165{
 
   ICards public cards;
 
-  uint nextTradeId;
+  uint public nextTradeId;
   mapping(uint => Trade) public trades; // map com as trocas por Id
 
   constructor(address cardsContract) {
@@ -120,6 +120,10 @@ contract Trades is IERC1155Receiver, ERC165{
         bytes calldata data
     ) external pure override returns (bytes4) {
         return this.onERC1155BatchReceived.selector;
+    }
+
+    function getTrade(uint tradeId) external view returns (Trade memory) {
+      return trades[tradeId];
     }
 
 }

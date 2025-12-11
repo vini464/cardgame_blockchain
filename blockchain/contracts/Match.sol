@@ -32,10 +32,12 @@ contract Matches {
   }
 
   function enqueue() external {
+    require(msg.sender != waitingPlayer, "You are already waiting");
     if (!isWaiting) {
       isWaiting = true;
       waitingPlayer = msg.sender;
-    } else {
+    }
+    else {
       matches[nextMatchId] = Match({
         playerA: waitingPlayer,
         cardA: 0,
@@ -76,6 +78,11 @@ contract Matches {
       }
     }
 
+  }
+
+  function getMatch(uint matchId) external view returns (Match memory){
+    require(matchId >= 0 && matchId < nextMatchId, "getMatch: invalid Id");
+    return matches[matchId];
   }
 
 }

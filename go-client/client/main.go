@@ -63,7 +63,7 @@ func main() {
 	// Menu inicial:
 FOR:
 	for {
-		op := input("1 - Jogar;\n2 - Pegar Booter;\n3 - Trocar Carta;\n4 - Ver Coleção; 0 - sair")
+		op := input("1 - Jogar;\n2 - Pegar Booter;\n3 - Trocar Carta;\n4 - Ver Coleção;\n5 - Ver Partidas\n6 - Ver Trocas\n 0 - sair")
 		switch op {
 		case "1":
 			id, _ := match.NextMatchId(&bind.CallOpts{})
@@ -73,7 +73,16 @@ FOR:
 				fmt.Println("Waiting for a opponent")
 				time.Sleep(time.Second * 2)
 			}
-			fmt.Println("You are playing in match: ", id)
+
+			maxId, _ := match.NextMatchId(&bind.CallOpts{})
+
+			fmt.Println("Voce está jogando nas seguintes partidas: ", id)
+			for id := 0; id < int(maxId.Int64()); id++ {
+				currentMatch, err := match.GetMatch(&bind.CallOpts{}, big.NewInt(int64(id)))
+				if err == nil && !currentMatch.Finished && (currentMatch.PlayerA == auth.From || currentMatch.PlayerB == auth.From) {
+					fmt.Println("-> ", id)
+				}
+			}
 			for id := 1; id < 11; id++ {
 				bal, _ := card.BalanceOf(&bind.CallOpts{}, auth.From, big.NewInt(int64(id)))
 				fmt.Println("Card: ", id, " Quantidade: ", bal)
@@ -97,16 +106,46 @@ FOR:
 				tx, _ := trade.AcceptOffer(auth, big.NewInt(int64(tradeId)))
 				log.Println("tx enviada:", tx.Hash().Hex())
 			case "3":
-			default:
-				fmt.Println("Uknown Command - voltando para o menu inicial")
 				tradeId := intInput("Digite o Id da troca: ")
 				tx, _ := trade.CancelOffer(auth, big.NewInt(int64(tradeId)))
 				log.Println("tx enviada:", tx.Hash().Hex())
+			default:
+				fmt.Println("Uknown Command - voltando para o menu inicial")
 			}
 		case "4":
 			for id := 1; id < 11; id++ {
 				bal, _ := card.BalanceOf(&bind.CallOpts{}, auth.From, big.NewInt(int64(id)))
 				fmt.Println("Card: ", id, " Quantidade: ", bal)
+			}
+		case "5":
+			maxId, _ := match.NextMatchId(&bind.CallOpts{})
+			for id := 0; id < int(maxId.Int64()); id++ {
+				currentMatch, err := match.GetMatch(&bind.CallOpts{}, big.NewInt(int64(id)))
+				if err == nil {
+					fmt.Println("Match #", id)
+					fmt.Println("playerA  -> ", currentMatch.PlayerA.Hex())
+					fmt.Println("playerB  -> ", currentMatch.PlayerB.Hex())
+					fmt.Println("CardA    -> ", currentMatch.CardA.Int64())
+					fmt.Println("CardB    -> ", currentMatch.CardB.Int64())
+					fmt.Println("Finished -> ", currentMatch.Finished)
+					fmt.Println("Winner   -> ", currentMatch.Winner.Hex())
+				}
+			}
+		case "6":
+			maxId, _ := trade.NextTradeId(&bind.CallOpts{})
+			for id := 0; id < int(maxId.Int64()); id++ {
+				currentTrade, err := trade.GetTrade(&bind.CallOpts{}, big.NewInt(int64(id)))
+				if err == nil {
+					fmt.Println("Trade #", id)
+					fmt.Println("PlayerA   -> ", currentTrade.PlayerA.Hex())
+					fmt.Println("PlayerB   -> ", currentTrade.PlayerB.Hex())
+					fmt.Println("CardA     -> ", currentTrade.CardA.Int64())
+					fmt.Println("CardB     -> ", currentTrade.CardB.Int64())
+					fmt.Println("AcceptedA -> ", currentTrade.AcceptedA)
+					fmt.Println("AcceptedB -> ", currentTrade.AcceptedB)
+					fmt.Println("Complete  -> ", currentTrade.Complete)
+
+				}
 			}
 		case "0":
 			break FOR
