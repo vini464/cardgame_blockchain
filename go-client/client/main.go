@@ -60,7 +60,7 @@ func main() {
 		log.Fatal("Erro ao criar card:", err)
 	}
 
-	card.SetApprovalForAll(auth, tradeAddr, true);
+	card.SetApprovalForAll(auth, tradeAddr, true)
 
 	// Menu inicial:
 FOR:
@@ -68,33 +68,38 @@ FOR:
 		op := input("1 - Jogar;\n2 - Pegar Booter;\n3 - Trocar Carta;\n4 - Ver Coleção;\n5 - Ver Partidas\n6 - Ver Trocas\n 0 - sair")
 		switch op {
 		case "1":
-			id, _ := match.NextMatchId(&bind.CallOpts{})
-			tx, _ := match.Enqueue(auth)
-			log.Println("tx enviada:", tx.Hash().Hex())
-			for {
-				waiting, _ := match.IsWaiting(&bind.CallOpts{}) 
-				fmt.Println("Waiting for a opponent")
-				time.Sleep(time.Second * 2)
-				if !waiting {
-					break
-				}
-			}
 
 			maxId, _ := match.NextMatchId(&bind.CallOpts{})
 
-			fmt.Println("Voce está jogando nas seguintes partidas: ", id)
+			playingMatches := 0
+			fmt.Println("Voce está jogando nas seguintes partidas: ")
 			for id := 0; id < int(maxId.Int64()); id++ {
 				currentMatch, err := match.GetMatch(&bind.CallOpts{}, big.NewInt(int64(id)))
 				if err == nil && !currentMatch.Finished && (currentMatch.PlayerA == auth.From || currentMatch.PlayerB == auth.From) {
 					fmt.Println("-> ", id)
+					playingMatches++
 				}
+			}
+			if playingMatches == 0 { // não ta jogando, entra na fila
+				tx, _ := match.Enqueue(auth)
+				log.Println("tx enviada:", tx.Hash().Hex())
+				for {
+					waiting, _ := match.IsWaiting(&bind.CallOpts{})
+					fmt.Println("Waiting for a opponent")
+					time.Sleep(time.Second * 2)
+					if !waiting {
+						break
+					}
+				}
+
 			}
 			for id := 1; id < 11; id++ {
 				bal, _ := card.BalanceOf(&bind.CallOpts{}, auth.From, big.NewInt(int64(id)))
 				fmt.Println("Card: ", id, " Quantidade: ", bal)
 			}
+			id := intInput("Escolha a partida:\n> ")
 			card := intInput("Escolha sua carta:\n> ")
-			match.PlayCard(auth, id, big.NewInt(int64(card)))
+			match.PlayCard(auth, big.NewInt(int64(id)), big.NewInt(int64(card)))
 
 		case "2":
 			tx, _ := card.OpenBooster(auth)
