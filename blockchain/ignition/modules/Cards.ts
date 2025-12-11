@@ -1,0 +1,21 @@
+import { ethers } from "hardhat";
+
+async function main() {
+  console.log("\n====Deploying Cards=====\n");
+  const cards = await ethers.deployContract("Cards");
+  await cards.waitForDeployment();
+  const cardsAddress = await cards.getAddress();
+  console.log("Cards contract deployed at:", cardsAddress);
+
+
+  console.log("\n====Deploying Trades=====\n");
+  const trades = await ethers.deployContract("Trades", [cardsAddress]);
+  await trades.waitForDeployment();
+  const tradesAddress = await trades.getAddress();
+  console.log("Trades contract deployed at:", cardsAddress);
+}
+
+main().catch((err) => {
+  console.error(err);
+  process.exit(1);
+});
