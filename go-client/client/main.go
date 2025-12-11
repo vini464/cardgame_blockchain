@@ -6,6 +6,8 @@ import (
 	"log"
 	"math/big"
 	"os"
+	"strconv"
+	"time"
 
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
@@ -58,18 +60,62 @@ func main() {
 		log.Fatal("Erro ao criar card:", err)
 	}
 
-	tx, _ := card.OpenBooster(auth)
-	log.Println("tx enviada:", tx.Hash().Hex())
+	// Menu inicial:
+FOR:
+	for {
+		op := input("1 - Jogar;\n2 - Pegar Booter;\n3 - Trocar Carta;\n4 - Ver Coleção; 0 - sair")
+		switch op {
+		case "1":
+			id, _ := match.NextMatchId(&bind.CallOpts{})
+			tx, _ := match.Enqueue(auth)
+			log.Println("tx enviada:", tx.Hash().Hex())
+			for waiting, _ := match.IsWaiting(&bind.CallOpts{}); waiting; {
+				fmt.Println("Waiting for a opponent")
+				time.Sleep(time.Second * 2)
+			}
+			fmt.Println("You are playing in match: ", id)
+			for id := 1; id < 11; id++ {
+				bal, _ := card.BalanceOf(&bind.CallOpts{}, auth.From, big.NewInt(int64(id)))
+				fmt.Println("Card: ", id, " Quantidade: ", bal)
+			}
+			card := intInput("Escolha sua carta:\n> ")
+			match.PlayCard(auth, id, big.NewInt(int64(card)))
 
-	playerHex := input("Insira o endereço do playerB:\n")
+		case "2":
+			tx, _ := card.OpenBooster(auth)
+			log.Println("tx enviada:", tx.Hash().Hex())
+		case "3":
+			opt := input("1 - Criar Troca;\n2 - Aceitar uma troca\n3 - Cancelar uma Troca\n(any) - Voltar\n> ")
+			switch opt {
+			case "1":
+				playerHex := input("Insira o endereço do playerB:\n")
+				playerAddr := common.HexToAddress(playerHex)
+				tx, _ := trade.CreateOffer(auth, big.NewInt(1), playerAddr, big.NewInt(2))
+				log.Println("tx enviada:", tx.Hash().Hex())
+			case "2":
+				tradeId := intInput("Digite o Id da troca: ")
+				tx, _ := trade.AcceptOffer(auth, big.NewInt(int64(tradeId)))
+				log.Println("tx enviada:", tx.Hash().Hex())
+			case "3":
+			default:
+				fmt.Println("Uknown Command - voltando para o menu inicial")
+				tradeId := intInput("Digite o Id da troca: ")
+				tx, _ := trade.CancelOffer(auth, big.NewInt(int64(tradeId)))
+				log.Println("tx enviada:", tx.Hash().Hex())
+			}
+		case "4":
+			for id := 1; id < 11; id++ {
+				bal, _ := card.BalanceOf(&bind.CallOpts{}, auth.From, big.NewInt(int64(id)))
+				fmt.Println("Card: ", id, " Quantidade: ", bal)
+			}
+		case "0":
+			break FOR
+		default:
+			fmt.Println("Uknown Command")
 
-	playerAddr := common.HexToAddress(playerHex)
+		}
+	}
 
-	tx, _ = trade.CreateOffer(auth, big.NewInt(1), playerAddr, big.NewInt(2))
-	log.Println("tx enviada:", tx.Hash().Hex())
-
-	tx, _ = match.Enqueue(auth)
-	log.Println("tx enviada:", tx.Hash().Hex())
 }
 
 func input(text string) string {
@@ -77,4 +123,17 @@ func input(text string) string {
 	fmt.Print(text)
 	scanner.Scan()
 	return scanner.Text()
+}
+
+func intInput(text string) int {
+	var err error
+	var num int
+	for {
+		t := input(text)
+		num, err = strconv.Atoi(t)
+		if err == nil {
+			break
+		}
+	}
+	return num
 }
