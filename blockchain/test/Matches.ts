@@ -59,6 +59,12 @@ describe("Match Contract", function () {
     const m = await matches.matches(0);
 
     expect(m.winner, "winner should be playerA").to.equal(playerA);
+    let total = 0n;
+    for (let id = 1; id <= 10; id++) {
+      const bal = await cards.balanceOf(playerA.address, id); // checa quantas cartas o jogador tem
+      total += bal;
+    }
+    expect(total, "PlayerA should have 6 cards, 1 given by test and 5 for win the match").to.equal(6n);
 
   });
 
