@@ -1,13 +1,13 @@
-# Sample Hardhat Project
+# Game Blockchain
 
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, and a Hardhat Ignition module that deploys that contract.
+Here is all the logic behing the game's blockchain.
 
-Try running some of the following tasks:
-
+To run all unit tests use:
 ```shell
-npx hardhat help
 npx hardhat test
-REPORT_GAS=true npx hardhat test
+```
+to 
+```shell
 npx hardhat node
-npx hardhat ignition deploy ./ignition/modules/Lock.ts
+npx hardhat run ignition/modules/DeployContracts.ts --network localhost
 ```
