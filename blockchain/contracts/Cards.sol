@@ -31,13 +31,19 @@ contract Cards is ERC1155 {
   }
 
   // Abre um booster para um jogador
-  function openBooster() external {
-    uint rand = uint(keccak256(abi.encodePacked(block.prevrandao, block.timestamp, msg.sender, address(this))));
+  function giveBooster(address player) public {
+    uint rand = uint(keccak256(abi.encodePacked(block.prevrandao, block.timestamp, player, address(this))));
     for (uint i =0; i < 5; i++) {
       uint cardId = (rand%10) +1; 
       rand = uint(keccak256(abi.encode(rand)));
-      mintCard(msg.sender, cardId, 1); // mint apenas uma cópia da carta
+      mintCard(player, cardId, 1); // mint apenas uma cópia da carta
     }
+  }
+  function openBooster() external {
+    giveBooster(msg.sender);
+  }
+  function power(uint cardId) external returns (uint) {
+    return cardPower[cardId];
   }
 }
 

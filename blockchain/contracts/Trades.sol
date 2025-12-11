@@ -24,16 +24,16 @@ contract Trades is IERC1155Receiver, ERC165{
 
   ICards public cards;
 
-  uint nextTrade;
+  uint nextTradeId;
   mapping(uint => Trade) public trades; // map com as trocas por Id
 
   constructor(address cardsContract) {
-    nextTrade = 0;
+    nextTradeId = 0;
     cards = ICards(cardsContract);
   }
 
   function createOffer(uint cardA, address playerB, uint cardB) external {
-    trades[nextTrade] = Trade({
+    trades[nextTradeId] = Trade({
       playerA: msg.sender,
       cardA: cardA,
       playerB: playerB,
@@ -42,11 +42,11 @@ contract Trades is IERC1155Receiver, ERC165{
       acceptedB: false,
       complete: false
     });
-    nextTrade++;
+    nextTradeId++;
   }
 
   function cancelOffer(uint tradeId) external {
-    require(tradeId > 0 && tradeId < nextTradeId, "cancelOffer: Invalid tradeId");
+    require(tradeId >= 0 && tradeId < nextTradeId, "cancelOffer: Invalid tradeId");
     Trade storage t = trades[tradeId];
     require(!t.complete, "cancelOffer: this trade is already done");
     require((msg.sender == t.playerA && t.acceptedA) || (msg.sender == t.playerB && t.acceptedB), "cancelOffer: You didn't accepted this trade yet");
@@ -63,7 +63,7 @@ contract Trades is IERC1155Receiver, ERC165{
 
   // aceita uma troca proposta e envia a carta para o intermediário 
   function acceptOffer(uint tradeId) external {
-    require(tradeId > 0 && tradeId < nextTradeId, "acceptOffer: Invalid tradeId");
+    require(tradeId >= 0 && tradeId < nextTradeId, "acceptOffer: Invalid tradeId");
     Trade storage t = trades[tradeId];
     require(msg.sender == t.playerA || msg.sender == t.playerB, "acceptOffer: You aren't in the trade get out!");
     require((msg.sender == t.playerA && !t.acceptedA) || (msg.sender == t.playerB && !t.acceptedB), "acceptOffer: Your had already accepted this offer");
@@ -121,5 +121,6 @@ contract Trades is IERC1155Receiver, ERC165{
     ) external pure override returns (bytes4) {
         return this.onERC1155BatchReceived.selector;
     }
+
 }
 

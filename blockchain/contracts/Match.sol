@@ -4,9 +4,10 @@ pragma solidity ^0.8.28;
 interface ICards {
   function balanceOf(address owner, uint id) external view returns (uint);
   function power(uint id) external view returns (uint);
+  function giveBooster(address player) external;
 }
 
-contract Match {
+contract Matches {
   ICards public cards;
 
   struct Match {
@@ -21,8 +22,8 @@ contract Match {
   uint public nextMatchId;
   mapping(uint => Match) public matches;
 
-  bool isWaiting;
-  address waitingPlayer;
+  bool public isWaiting;
+  address public waitingPlayer;
 
   constructor(address cardsAddress) {
     cards = ICards(cardsAddress);
@@ -45,15 +46,16 @@ contract Match {
       });
 
       isWaiting = false;
+      waitingPlayer = address(0);
       nextMatchId++;
     }
   }
 
   function playCard(uint matchId, uint cardId) external {
-    require(matchId > 0 && matchId < nextMatchId, "playCard: Invalid matchId");
+    require(matchId >= 0 && matchId < nextMatchId, "playCard: Invalid matchId");
     Match storage m = matches[matchId];
     require(msg.sender == m.playerA || msg.sender == m.playerB, "playCard: You arent a player in this match");
-    require(cards.balanceOf(msg.sender, cardId), "playCard: You dont have that card bro");
+    require(cards.balanceOf(msg.sender, cardId) > 0, "playCard: You dont have that card bro");
     
     if (msg.sender == m.playerA) {
       m.cardA = cardId;
@@ -64,13 +66,13 @@ contract Match {
 
     if (m.cardA != 0 && m.cardB != 0) {
       m.finished = true;
-      if (cards.power(cardA) > cards.power(cardB)) {
-        m.winner = playerA;
-        cards.connect(playerA).openBooster();
+      if (cards.power(m.cardA) > cards.power(m.cardB)) {
+        m.winner = m.playerA;
+        cards.giveBooster(m.playerA);
       }
-      else if (cards.power(cardA) < cards.power(cardB)) {
-        m.winner = playerB;
-        cards.connect(playerB).openBooster();
+      else if (cards.power(m.cardA) < cards.power(m.cardB)) {
+        m.winner = m.playerB;
+        cards.giveBooster(m.playerB);
       }
     }
 

@@ -21,7 +21,7 @@ describe("Trades Contract", function () {
 
     tradesFactory = await ethers.getContractFactory("Trades");
     trades = await tradesFactory.deploy(cardsAddr);
-    await cards.waitForDeployment(); // deploy trade contract
+    await trades.waitForDeployment(); // deploy trade contract
 
     // giving cards to players
     await cards.mintCard(playerA, 1, 1);
