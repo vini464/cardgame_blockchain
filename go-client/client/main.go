@@ -60,6 +60,8 @@ func main() {
 		log.Fatal("Erro ao criar card:", err)
 	}
 
+	card.SetApprovalForAll(auth, tradeAddr, true);
+
 	// Menu inicial:
 FOR:
 	for {
@@ -69,9 +71,13 @@ FOR:
 			id, _ := match.NextMatchId(&bind.CallOpts{})
 			tx, _ := match.Enqueue(auth)
 			log.Println("tx enviada:", tx.Hash().Hex())
-			for waiting, _ := match.IsWaiting(&bind.CallOpts{}); waiting; {
+			for {
+				waiting, _ := match.IsWaiting(&bind.CallOpts{}) 
 				fmt.Println("Waiting for a opponent")
 				time.Sleep(time.Second * 2)
+				if !waiting {
+					break
+				}
 			}
 
 			maxId, _ := match.NextMatchId(&bind.CallOpts{})
@@ -99,16 +105,28 @@ FOR:
 			case "1":
 				playerHex := input("Insira o endereço do playerB:\n")
 				playerAddr := common.HexToAddress(playerHex)
-				tx, _ := trade.CreateOffer(auth, big.NewInt(1), playerAddr, big.NewInt(2))
-				log.Println("tx enviada:", tx.Hash().Hex())
+				tx, err := trade.CreateOffer(auth, big.NewInt(1), playerAddr, big.NewInt(2))
+				if err != nil {
+					log.Println(err)
+				} else {
+					log.Println("tx enviada:", tx.Hash().Hex())
+				}
 			case "2":
 				tradeId := intInput("Digite o Id da troca: ")
-				tx, _ := trade.AcceptOffer(auth, big.NewInt(int64(tradeId)))
-				log.Println("tx enviada:", tx.Hash().Hex())
+				tx, err := trade.AcceptOffer(auth, big.NewInt(int64(tradeId)))
+				if err != nil {
+					log.Println(err)
+				} else {
+					log.Println("tx enviada:", tx.Hash().Hex())
+				}
 			case "3":
 				tradeId := intInput("Digite o Id da troca: ")
-				tx, _ := trade.CancelOffer(auth, big.NewInt(int64(tradeId)))
-				log.Println("tx enviada:", tx.Hash().Hex())
+				tx, err := trade.CancelOffer(auth, big.NewInt(int64(tradeId)))
+				if err != nil {
+					log.Println(err)
+				} else {
+					log.Println("tx enviada:", tx.Hash().Hex())
+				}
 			default:
 				fmt.Println("Uknown Command - voltando para o menu inicial")
 			}
