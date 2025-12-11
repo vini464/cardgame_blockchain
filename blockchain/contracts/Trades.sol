@@ -46,6 +46,7 @@ contract Trades is IERC1155Receiver, ERC165{
   }
 
   function cancelOffer(uint tradeId) external {
+    require(tradeId > 0 && tradeId < nextTradeId, "cancelOffer: Invalid tradeId");
     Trade storage t = trades[tradeId];
     require(!t.complete, "cancelOffer: this trade is already done");
     require((msg.sender == t.playerA && t.acceptedA) || (msg.sender == t.playerB && t.acceptedB), "cancelOffer: You didn't accepted this trade yet");
@@ -62,6 +63,7 @@ contract Trades is IERC1155Receiver, ERC165{
 
   // aceita uma troca proposta e envia a carta para o intermediário 
   function acceptOffer(uint tradeId) external {
+    require(tradeId > 0 && tradeId < nextTradeId, "acceptOffer: Invalid tradeId");
     Trade storage t = trades[tradeId];
     require(msg.sender == t.playerA || msg.sender == t.playerB, "acceptOffer: You aren't in the trade get out!");
     require((msg.sender == t.playerA && !t.acceptedA) || (msg.sender == t.playerB && !t.acceptedB), "acceptOffer: Your had already accepted this offer");
