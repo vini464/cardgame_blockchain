@@ -110,7 +110,9 @@ FOR:
 			case "1":
 				playerHex := input("Insira o endereço do playerB:\n")
 				playerAddr := common.HexToAddress(playerHex)
-				tx, err := trade.CreateOffer(auth, big.NewInt(1), playerAddr, big.NewInt(2))
+				cardA := intInput("Insira a carta que deseja enviar: ")
+				cardB := intInput("Insira a carta que deseja receber: ")
+				tx, err := trade.CreateOffer(auth, big.NewInt(cardA), playerAddr, big.NewInt(cardB))
 				if err != nil {
 					log.Println(err)
 				} else {
